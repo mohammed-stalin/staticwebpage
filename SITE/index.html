@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA World Cup Qatar 2022</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: rgba(175, 18, 214, 0.96);
+            --primary-dark: rgba(140, 14, 171, 0.96);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+        
+        .logo-text {
+            font-family: 'Merienda', cursive;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary);
+        }
+        
+        .bg-primary-dark {
+            background-color: var(--primary-dark);
+        }
+        
+        .text-primary {
+            color: var(--primary);
+        }
+        
+        .border-primary {
+            border-color: var(--primary);
+        }
+        
+        .hover\:bg-primary-dark:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .navbar {
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar.scrolled {
+            background-color: rgba(175, 18, 214, 0.9);
+            padding: 10px 0;
+        }
+        
+        .carousel-item {
+            height: 100vh;
+            min-height: 600px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .carousel-caption {
+            bottom: 180px;
+        }
+        
+        .team-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .team-flag {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .news-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .player-slider {
+            background: linear-gradient(135deg, rgba(175, 18, 214, 0.1) 0%, rgba(175, 18, 214, 0.05) 100%);
+            border-radius: 15px;
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        
+        .footer a:hover {
+            color: #ddd;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Loading animation */
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .carousel-item {
+                height: 70vh;
+                min-height: 400px;
+            }
+            
+            .carousel-caption {
+                bottom: 100px;
+            }
+            
+            .carousel-caption h5 {
+                font-size: 1.5rem;
+            }
+            
+            .carousel-caption p {
+                font-size: 1rem;
+            }
+        }
+
+        .carousel-inner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Back to top button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="navbar fixed-top w-full z-50 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <img src="./media/wcup1-removebg-preview.png" alt="World Cup Logo" class="h-12 mr-2">
+                    <span class="logo-text text-xl font-bold">QATAR 2022</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="/SITE.html" class="hover:text-gray-200 transition duration-300">Home</a>
+                    <div class="relative group">
+                        <button class="hover:text-gray-200 transition duration-300 flex items-center">
+                            Groups <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="#groupa" class="block px-4 py-2 hover:bg-purple-100">Group C</a>
+                            <a href="#groupb" class="block px-4 py-2 hover:bg-purple-100">Group F</a>
+                        </div>
+                    </div>
+                    <a href="https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/qatar2022/matches" target="_blank" class="hover:text-gray-200 transition duration-300">Matches</a>
+                    <a href="#classement" class="hover:text-gray-200 transition duration-300">Standings</a>
+                </div>
+                
+                <button class="md:hidden focus:outline-none" id="mobile-menu-button">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div class="md:hidden hidden bg-primary-dark rounded-lg mt-2 py-2" id="mobile-menu">
+                <a href="/SITE.html" class="block px-4 py-2 hover:bg-purple-700 rounded">Home</a>
+                <div class="px-4 py-2">
+                    <button class="w-full flex justify-between items-center" id="groups-toggle">
+                        Groups <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="hidden bg-purple-800 rounded mt-1" id="groups-menu">
+                        <a href="#groupa" class="block px-4 py-2 hover:bg-purple-700 rounded">Group C</a>
+                        <a href="#groupb" class="block px-4 py-2 hover:bg-purple-700 rounded">Group F</a>
+                    </div>
+                </div>
+                <a href="https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/qatar2022/matches" target="_blank" class="block px-4 py-2 hover:bg-purple-700 rounded">Matches</a>
+                <a href="#classement" class="block px-4 py-2 hover:bg-purple-700 rounded">Standings</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Groups Section -->
+    <section class="py-16 bg-gray-50" id="groupa">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Group C</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Argentina -->
+                <div class="team-card bg-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.beinsports.com/TaBIPGvD2onew0lKjBe7OwM_R4g=/full-fit-in/1000x0/4511088-Argentina_en.png');"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="https://cdn2.iconfinder.com/data/icons/flags-68/48/Argentina-512.png" alt="Argentina Flag" class="team-flag mr-3">
+                            <h3 class="text-xl font-bold">Argentina</h3>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>FIFA Rank: 3</span>
+                            <span>Coach: Scaloni</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Saudi Arabia -->
+                <div class="team-card bg-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.beinsports.com/852DpfaZguQ9mfiZ_OA5nGA9eOY=/full-fit-in/1000x0/4511096-KSA_en.png');"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="https://cdn.countryflags.com/thumbs/saudi-arabia/flag-round-250.png" alt="Saudi Arabia Flag" class="team-flag mr-3">
+                            <h3 class="text-xl font-bold">Saudi Arabia</h3>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>FIFA Rank: 51</span>
+                            <span>Coach: Renard</span>
+                        </div>
+                        <button onclick="showSaudiTeam()" class="mt-4 text-primary hover:text-primary-dark font-medium">View Players →</button>
+                    </div>
+                </div>
+                
+                <!-- Mexico -->
+                <div class="team-card bg-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.beinsports.com/x0doeWgU2R5i3XbzMrW5SHOwhXY=/full-fit-in/1000x0/4511103-Mexico_en.png');"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Mexico_flag_icon.svg/2048px-Mexico_flag_icon.svg.png" alt="Mexico Flag" class="team-flag mr-3">
+                            <h3 class="text-xl font-bold">Mexico</h3>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>FIFA Rank: 13</span>
+                            <span>Coach: Martino</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Poland -->
+                <div class="team-card bg-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.beinsports.com/x0doeWgU2R5i3XbzMrW5SHOwhXY=/full-fit-in/1000x0/4511113-Poland_en.png');"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="https://cdn-icons-png.flaticon.com/512/323/323338.png" alt="Poland Flag" class="team-flag mr-3">
+                            <h3 class="text-xl font-bold">Poland</h3>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>FIFA Rank: 26</span>
+                            <span>Coach: Michniewicz</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Group F Section -->
+    <section class="py-16 bg-white" id="groupb">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Group F</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Belgium -->
+                <div class="team-card bg-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.beinsports.com/CK9TbymUaq3BGXks-sBA-2bI1Hs=/full-fit-in/1000x0/4511132-Belgium_en.png');"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="https://cdn-icons-png.flaticon.com/512/197/197583.png" alt="Belgium Flag" class="team-flag mr-3">
+                            <h3 class="text-xl font-bold">Belgium</h3>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>FIFA Rank: 2</span>
+                            <span>Coach: Martinez</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Canada -->
+                <div class="team-card bg-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.beinsports.com/bE1TQiZlTOI3twToWZpilct3BVk=/full-fit-in/1000x0/4511217-Canada_en.png');"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3909/3909455.png" alt="Canada Flag" class="team-flag mr-3">
+                            <h3 class="text-xl font-bold">Canada</h3>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>FIFA Rank: 41</span>
+                            <span>Coach: Herdman</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Morocco -->
+                <div class="team-card bg-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.beinsports.com/E_xWUKRtwn3APL9E5zO-tOouD6E=/full-fit-in/1000x0/4511141-Morocco_en-%281%29.png');"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="https://cdn.countryflags.com/thumbs/morocco/flag-round-250.png" alt="Morocco Flag" class="team-flag mr-3">
+                            <h3 class="text-xl font-bold">Morocco</h3>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>FIFA Rank: 22</span>
+                            <span>Coach: Regragui</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Croatia -->
+                <div class="team-card bg-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.beinsports.com/dIn2fKLgMBYCgY8gsACU8uXrRgw=/full-fit-in/1000x0/4511153-Croatia_en.png');"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="https://cdn.countryflags.com/thumbs/croatia/flag-round-250.png" alt="Croatia Flag" class="team-flag mr-3">
+                            <h3 class="text-xl font-bold">Croatia</h3>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>FIFA Rank: 12</span>
+                            <span>Coach: Dalić</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Latest News</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- News 1 -->
+                <div class="news-card bg-white">
+                    <img src="./media/actualite1.jpg" alt="Belgium vs Morocco" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">Morocco stuns Belgium in historic win</h3>
+                        <p class="text-gray-600 mb-4">Abdelhamid Sabiri surprised Thibaut Courtois with a clever free kick in the 73rd minute. Zakaria Aboukhlal sealed the deal as Morocco beat Belgium 2-0.</p>
+                        <button onclick="showNews('news1')" class="text-primary hover:text-primary-dark font-medium">Read More →</button>
+                    </div>
+                </div>
+                
+                <!-- News 2 -->
+                <div class="news-card bg-white">
+                    <img src="./media/actualites2.webp" alt="Argentina vs Mexico" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">Argentina breathes again after Mexico win</h3>
+                        <p class="text-gray-600 mb-4">After Argentina's victory against Mexico (2-0), the whole country is smiling again and has regained hope in its national team.</p>
+                        <button onclick="showNews('news2')" class="text-primary hover:text-primary-dark font-medium">Read More →</button>
+                    </div>
+                </div>
+                
+                <!-- News 3 -->
+                <div class="news-card bg-white">
+                    <img src="./media/actualites3.webp" alt="Morata and Kramaric" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">Morata and Kramaric join top scorers</h3>
+                        <p class="text-gray-600 mb-4">Spain's Álvaro Morata and Croatia's Andrej Kramaric have joined the group of players with two goals in the 2022 World Cup.</p>
+                        <button onclick="showNews('news3')" class="text-primary hover:text-primary-dark font-medium">Read More →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Saudi Team Section (Hidden by default) -->
+    <section class="py-16 bg-white hidden" id="saudiTeamSection">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">Saudi Arabia National Team</h2>
+                <button onclick="hideSaudiTeam()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Player Slider -->
+                <div class="player-slider p-6">
+                    <div class="relative">
+                        <div class="slideshow-container">
+                            <!-- Player 1 -->
+                            <div class="mySlides fade">
+                                <div class="numbertext">1 / 5</div>
+                                <img src="./saudia arabic/mohammed alowais.jpg" style="width:100%">
+                                <div class="text-center mt-4">
+                                    <h3 class="text-xl font-bold">Mohammed ALOWAIS</h3>
+                                    <p class="text-gray-600">Goalkeeper</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Player 2 -->
+                            <div class="mySlides fade">
+                                <div class="numbertext">2 / 5</div>
+                                <img src="./saudia arabic/saleh alshehri.jpg" style="width:100%">
+                                <div class="text-center mt-4">
+                                    <h3 class="text-xl font-bold">Saleh ALSHEHRI</h3>
+                                    <p class="text-gray-600">Forward</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Player 3 -->
+                            <div class="mySlides fade">
+                                <div class="numbertext">3 / 5</div>
+                                <img src="./saudia arabic/salem adawsari.jpg" style="width:100%">
+                                <div class="text-center mt-4">
+                                    <h3 class="text-xl font-bold">Salem ALDAWSARI</h3>
+                                    <p class="text-gray-600">Midfielder</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Player 4 -->
+                            <div class="mySlides fade">
+                                <div class="numbertext">4 / 5</div>
+                                <img src="./saudia arabic/salman alfaraj.jpg" style="width:100%">
+                                <div class="text-center mt-4">
+                                    <h3 class="text-xl font-bold">Salman ALFARAJ</h3>
+                                    <p class="text-gray-600">Midfielder</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Player 5 -->
+                            <div class="mySlides fade">
+                                <div class="numbertext">5 / 5</div>
+                                <img src="./saudia arabic/yasir alshahrani.jpg" style="width:100%">
+                                <div class="text-center mt-4">
+                                    <h3 class="text-xl font-bold">Yasir ALSHAHRANI</h3>
+                                    <p class="text-gray-600">Defender</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Next and previous buttons -->
+                            <a class="prev absolute left-0 top-1/2 transform -translate-y-1/2 cursor-pointer text-white bg-black bg-opacity-50 p-4" onclick="plusSlides(-1)">&#10094;</a>
+                            <a class="next absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer text-white bg-black bg-opacity-50 p-4" onclick="plusSlides(1)">&#10095;</a>
+                        </div>
+                        <br>
+                        
+                        <!-- The dots/circles -->
+                        <div class="text-center">
+                            <span class="dot w-3 h-3 bg-gray-400 rounded-full inline-block mx-1 cursor-pointer" onclick="currentSlide(1)"></span>
+                            <span class="dot w-3 h-3 bg-gray-400 rounded-full inline-block mx-1 cursor-pointer" onclick="currentSlide(2)"></span>
+                            <span class="dot w-3 h-3 bg-gray-400 rounded-full inline-block mx-1 cursor-pointer" onclick="currentSlide(3)"></span>
+                            <span class="dot w-3 h-3 bg-gray-400 rounded-full inline-block mx-1 cursor-pointer" onclick="currentSlide(4)"></span>
+                            <span class="dot w-3 h-3 bg-gray-400 rounded-full inline-block mx-1 cursor-pointer" onclick="currentSlide(5)"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Player Information Form -->
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-6">Player Information</h3>
+                    <form>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-700 mb-2">First Name</label>
+                                <input type="text" id="firstName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="Mohammed">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Last Name</label>
+                                <input type="text" id="lastName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="ALOWAIS">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Date of Birth</label>
+                                <input type="date" id="dob" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="1991-10-10">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Height (cm)</label>
+                                <input type="number" id="height" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="185">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Team</label>
+                                <input type="text" id="team" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="Al Hilal">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Position</label>
+                                <input type="text" id="position" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="Goalkeeper">
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button type="button" class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-lg transition duration-300">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Players Table -->
+            <div class="mt-12">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold">Team Squad</h3>
+                    <button onclick="openAddPlayerModal()" class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                        <i class="fas fa-plus mr-2"></i> Add Player
+                    </button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full bg-white rounded-lg overflow-hidden">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th class="py-3 px-4 text-left">Player Name</th>
+                                <th class="py-3 px-4 text-left">Position</th>
+                                <th class="py-3 px-4 text-left">Club</th>
+                                <th class="py-3 px-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-3 px-4">Mohammed ALOWAIS</td>
+                                <td class="py-3 px-4">Goalkeeper</td>
+                                <td class="py-3 px-4">Al Hilal</td>
+                                <td class="py-3 px-4 text-center">
+                                    <button onclick="editPlayer(1)" class="text-blue-500 hover:text-blue-700 mr-4">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button onclick="deletePlayer(1)" class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-3 px-4">Saleh ALSHEHRI</td>
+                                <td class="py-3 px-4">Forward</td>
+                                <td class="py-3 px-4">Al Hilal</td>
+                                <td class="py-3 px-4 text-center">
+                                    <button onclick="editPlayer(2)" class="text-blue-500 hover:text-blue-700 mr-4">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button onclick="deletePlayer(2)" class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-3 px-4">Salem ALDAWSARI</td>
+                                <td class="py-3 px-4">Midfielder</td>
+                                <td class="py-3 px-4">Al Hilal</td>
+                                <td class="py-3 px-4 text-center">
+                                    <button onclick="editPlayer(3)" class="text-blue-500 hover:text-blue-700 mr-4">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button onclick="deletePlayer(3)" class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-3 px-4">Salman ALFARAJ</td>
+                                <td class="py-3 px-4">Midfielder</td>
+                                <td class="py-3 px-4">Al Hilal</td>
+                                <td class="py-3 px-4 text-center">
+                                    <button onclick="editPlayer(4)" class="text-blue-500 hover:text-blue-700 mr-4">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button onclick="deletePlayer(4)" class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-3 px-4">Yasir ALSHAHRANI</td>
+                                <td class="py-3 px-4">Defender</td>
+                                <td class="py-3 px-4">Al Hilal</td>
+                                <td class="py-3 px-4 text-center">
+                                    <button onclick="editPlayer(5)" class="text-blue-500 hover:text-blue-700 mr-4">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button onclick="deletePlayer(5)" class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Team Achievements -->
+            <div class="mt-12 bg-primary bg-opacity-10 p-6 rounded-lg">
+                <div class="flex items-center mb-6">
+                    <img src="./images/logosau.png" alt="Saudi Arabia Logo" class="h-16 mr-4">
+                    <h3 class="text-2xl font-bold">Saudi Arabia National Team Achievements</h3>
+                </div>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-trophy text-primary mt-1 mr-2"></i>
+                        <span>Three-time AFC Asian Cup champions (1984, 1988, 1996)</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-globe-asia text-primary mt-1 mr-2"></i>
+                        <span>Participated in six FIFA World Cup tournaments between 1994 and 2022</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-star text-primary mt-1 mr-2"></i>
+                        <span>Historic victory over Argentina in 2022 World Cup group stage</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Details Sections (Hidden by default) -->
+    <section class="py-16 bg-gray-50 hidden" id="news1">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-lg overflow-hidden">
+                <div class="relative">
+                    <img src="./media/actualite11.jpg" alt="Belgium vs Morocco" class="w-full h-96 object-cover">
+                    <button onclick="hideNews('news1')" class="absolute top-4 right-4 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full">
+                        <i class="fas fa-times text-gray-800"></i>
+                    </button>
+                </div>
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">Morocco stuns Belgium in historic World Cup win</h2>
+                    <div class="prose max-w-none">
+                        <p class="mb-4">The Qatari players might be jealous. On Sunday, November 27, during their victory against Belgium (2-0), the Moroccan team played as if they were at home. The Al Thumama stadium may be located in the southern zone of Doha, but the round venue could just as well have been erected south of Marrakech or Tangier. Moroccan supporters decided to play their role as the twelfth man to the fullest, or even that of a thirteenth or fourteenth man.</p>
+                        
+                        <p class="mb-4">Every Belgian possession was booed, every offensive, every defensive gesture from Morocco was encouraged. A hostile atmosphere for Belgium's Eden Hazard, the world's second-ranked nation according to FIFA. Thanks to this victory, the Atlas Lions took the lead in Group F, with four points, pending the result of the other match between Croatia and Canada.</p>
+                        
+                        <p class="mb-4">Winners of their first match (1-0 against Canada), the Belgians tried to resist the atmosphere. Led by Eden Hazard or Kevin De Bruyne in the first half, they most often calmed this wind coming from the Atlas by confiscating the ball. The Moroccans, for their part, ran a lot and fought like demons against the Red Devils. But with such an atmosphere, nothing surprising.</p>
+                        
+                        <p class="mb-4">Folded back in their camp, the Atlas Lions sometimes came out of it in a sharp manner. It was during stoppage time that a free kick from Zyech set the stadium on fire. His shot surprised Courtois. The goal was rightly disallowed for an offside by Romain Saïss, who did not touch the ball but did obstruct the Real Madrid goalkeeper's field of vision.</p>
+                        
+                        <p class="mb-4">And the Moroccans were more enterprising in the second half. Despite an attempt by Eden Hazard, pushed back by Mohamedi (52nd), they positioned themselves much higher, managing to protect themselves from Belgian counterattacks. The Angers' Sofiane Boufal even thought of opening the scoring: his curled shot grazed Courtois' left post (59th). At the hour mark, the two teams then went blow for blow. The Belgian, Dries Mertens, new entrant, forced Mohamedi to make an effective save (65th).</p>
+                        
+                        <p class="mb-4">But it was the choices of coach Walid Regragui that made the difference. One of the substitutes, Abdelhamid Sabiri, fooled the best goalkeeper in the world. Off-center on the left side, in an impossible angle, Sabiri scored directly, against a helpless Thibaut Courtois (73rd, 1-0). The break goal - and the Belgian chaos - was the work of another substitute, Toulouse's Zakaria Aboukhlal who converted in stoppage time an offering from Zyech (92nd, 2-0).</p>
+                        
+                        <p>On Thursday, December 1, Achraf Hakimi's teammates will have to validate their participation in the round of 16 against Canada. A performance they have only achieved once, during the 1986 World Cup in Mexico. In 1998, despite 4 points, they had failed by a whisker behind Norway, beaten by one point after a controversial victory by the Norwegians against Brazil.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-50 hidden" id="news2">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-lg overflow-hidden">
+                <div class="relative">
+                    <img src="./media/actualite21.webp" alt="Argentina vs Mexico" class="w-full h-96 object-cover">
+                    <button onclick="hideNews('news2')" class="absolute top-4 right-4 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full">
+                        <i class="fas fa-times text-gray-800"></i>
+                    </button>
+                </div>
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">Argentina breathes again after crucial Mexico win</h2>
+                    <div class="prose max-w-none">
+                        <p class="mb-4">So, when the draw seemed to be on the horizon, Messi came out of his box, and single-handedly transformed the face of an Argentina that was drastically more mobile and finally recognizable in this World Cup after opening the scoring.</p>
+                        
+                        <p class="mb-4">"In the second half, we started to dominate in midfield and then they saw what happened: The number 10 always decides the match, the 10 decides he's the best," Argentina coach Lionel Scaloni said after the match. "Behind him there's a group that supports him and who know his importance. It's exciting at all levels."</p>
+                        
+                        <div class="my-8">
+                            <img src="./media/actualite23.webp" alt="Messi celebrating" class="w-full rounded-lg">
+                        </div>
+                        
+                        <p class="mb-4">In serious trouble after their opening defeat to Saudi Arabia (1-2), Argentina didn't even have time to savor, as they will need to beat Poland on Wednesday (8pm) to secure a place in the last 16. More than the victory, it's a regained confidence that seems to be calming the Argentine dressing room.</p>
+                        
+                        <p>"We showed that we have character and that we are a great group," said Emiliano "Dibu" Martinez. "Messi is the best player in the world and he will always have a chance. Playing with him is always easier." Messi, as the great generational leader that he is, may well have unlocked Argentine minds often shaken by telluric pressure. Just like a certain Diego did in his time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-50 hidden" id="news3">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-lg overflow-hidden">
+                <div class="relative">
+                    <img src="./media/actualite31.jpg" alt="Morata and Kramaric" class="w-full h-96 object-cover">
+                    <button onclick="hideNews('news3')" class="absolute top-4 right-4 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full">
+                        <i class="fas fa-times text-gray-800"></i>
+                    </button>
+                </div>
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">Morata and Kramaric join World Cup top scorers</h2>
+                    <div class="prose max-w-none">
+                        <p class="mb-6">Spain's Álvaro Morata and Croatia's Andrej Kramaric joined the group of players with two goals in the 2022 World Cup on Sunday, one length behind France's Kylian Mbappé and Ecuador's Enner Valencia, who each have three goals. Morata, a striker at Atlético Madrid, opened the scoring against Germany (1-1), eight minutes after coming on (62nd), and Kramaric, who plays for Hoffenheim in Germany, scored a brace against Canada (4-1).</p>
+                        
+                        <h3 class="text-2xl font-bold mb-4 mt-8">Top Scorers Table:</h3>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-xl font-semibold mb-2">3 goals:</h4>
+                            <p>Mbappé (France), E. Valencia (Ecuador)</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-xl font-semibold mb-2">2 goals:</h4>
+                            <p>Álvaro Morata (Spain), Gakpo (Netherlands), Giroud (France), Kramaric (Croatia), Messi (Argentina), Richarlison (Brazil), Saka (England), Taremi (Iran), Torres (Spain)</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-xl font-semibold mb-2">1 goal:</h4>
+                            <p>Aboukhlal (Morocco), Al-Dawsari (Saudi Arabia), Al-Shehri (Saudi Arabia), Asano (Japan), A. Ayew (Ghana), Bale (Wales), Batshuayi (Belgium), Bellingham (England), Bukari (Ghana), Cheshmi (Iran), Christensen (Denmark), Cristiano Ronaldo (Portugal), Davies (Canada), Dia (Senegal), Diedhiou (Senegal), Dieng (Senegal), Doan (Japan), Duke (Australia), Embolo (Switzerland), Félix (Portugal), Fernández (Argentina), Fuller (Costa Rica), Fullkrug (Germany), Gavi (Spain), Goodwin (Australia), Grealish (England), Gündogan (Germany), Klaassen (Netherlands), Leão (Portugal), Lewandowski (Poland), Livaja (Croatia), Majer (Croatia), Marco Asensio (Spain), Muntari (Qatar), Olmo (Spain), Rabiot (France), Rashford (England), Rezaian (Iran), Saiss (Morocco), Soler (Spain), Sterling (England), Weah (USA), Zielinski (Poland)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Standings Section -->
+    <section class="py-16 bg-white" id="classement">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Group Standings</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="loader" id="standingsLoader"></div>
+            
+            <div class="points-container grid grid-cols-1 md:grid-cols-2 gap-8" id="standingsContainer">
+                <!-- Standings will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Player Modal (Hidden by default) -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" id="addPlayerModal">
+        <div class="bg-white rounded-lg w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">Add New Player</h3>
+                    <button onclick="closeAddPlayerModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="addPlayerForm">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">First Name</label>
+                            <input type="text" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Last Name</label>
+                            <input type="text" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Date of Birth</label>
+                            <input type="date" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Height (cm)</label>
+                            <input type="number" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Position</label>
+                            <select class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                                <option value="">Select Position</option>
+                                <option value="Goalkeeper">Goalkeeper</option>
+                                <option value="Defender">Defender</option>
+                                <option value="Midfielder">Midfielder</option>
+                                <option value="Forward">Forward</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Club</label>
+                            <input type="text" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-end space-x-4">
+                        <button type="button" onclick="closeAddPlayerModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">Cancel</button>
+                        <button type="submit" class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-lg transition duration-300">Add Player</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Us</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
+                            <span>BP, Tangier, Morocco</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3"></i>
+                            <span>+212 612-345678</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3"></i>
+                            <span>contact@worldcup2022.com</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/qatar2022" target="_blank" class="hover:underline">FIFA World Cup Qatar</a></li>
+                        <li><a href="https://www.beinsports.com/en/" target="_blank" class="hover:underline">BeIN Sports</a></li>
+                        <li><a href="https://www.aljazeera.com/sports/fifa-world-cup-qatar-2022/" target="_blank" class="hover:underline">Al Jazeera Coverage</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">About This Site</h3>
+                    <p>This is a fan-made website dedicated to the FIFA World Cup Qatar 2022. All content is for educational purposes only.</p>
+                    <div class="mt-4 flex items-center">
+                        <img src="./media/wcup1-removebg-preview.png" alt="World Cup Logo" class="h-10 mr-3">
+                        <span class="font-bold">QATAR 2022</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white border-opacity-20 mt-8 pt-8 text-center">
+                <p class="flex items-center justify-center">
+                    <i class="fas fa-copyright mr-2"></i>
+                    Copyright 2023-2024 | All Rights Reserved
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const groupsToggle = document.getElementById('groups-toggle');
+        const groupsMenu = document.getElementById('groups-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        groupsToggle.addEventListener('click', () => {
+            groupsMenu.classList.toggle('hidden');
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // Back to top button
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+        
+        // Saudi Team Section
+        function showSaudiTeam() {
+            document.getElementById('saudiTeamSection').classList.remove('hidden');
+            window.scrollTo({
+                top: document.getElementById('saudiTeamSection').offsetTop - 80,
+                behavior: 'smooth'
+            });
+        }
+        
+        function hideSaudiTeam() {
+            document.getElementById('saudiTeamSection').classList.add('hidden');
+        }
+        
+        // News Sections
+        function showNews(newsId) {
+            document.getElementById(newsId).classList.remove('hidden');
+            window.scrollTo({
+                top: document.getElementById(newsId).offsetTop - 80,
+                behavior: 'smooth'
+            });
+        }
+        
+        function hideNews(newsId) {
+            document.getElementById(newsId).classList.add('hidden');
+        }
+        
+        // Player Slider
+        let slideIndex = 1;
+        showSlides(slideIndex);
+        
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+        
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+        
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" bg-primary", " bg-gray-400");
+            }
+            
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className = dots[slideIndex-1].className.replace(" bg-gray-400", " bg-primary");
+            
+            // Update form fields based on current slide
+            updatePlayerForm(slideIndex);
+        }
+        
+        function updatePlayerForm(slideNumber) {
+            const players = [
+                {
+                    firstName: "Mohammed",
+                    lastName: "ALOWAIS",
+                    dob: "1991-10-10",
+                    height: "185",
+                    position: "Goalkeeper",
+                    team: "Al Hilal"
+                },
+                {
+                    firstName: "Saleh",
+                    lastName: "ALSHEHRI",
+                    dob: "1993-11-01",
+                    height: "184",
+                    position: "Forward",
+                    team: "Al Hilal"
+                },
+                {
+                    firstName: "Salem",
+                    lastName: "ALDAWSARI",
+                    dob: "1991-08-19",
+                    height: "171",
+                    position: "Midfielder",
+                    team: "Al Hilal"
+                },
+                {
+                    firstName: "Salman",
+                    lastName: "ALFARAJ",
+                    dob: "1989-08-01",
+                    height: "180",
+                    position: "Midfielder",
+                    team: "Al Hilal"
+                },
+                {
+                    firstName: "Yasir",
+                    lastName: "ALSHAHRANI",
+                    dob: "1992-05-25",
+                    height: "171",
+                    position: "Defender",
+                    team: "Al Hilal"
+                }
+            ];
+            
+            const player = players[slideNumber - 1];
+            document.getElementById('firstName').value = player.firstName;
+            document.getElementById('lastName').value = player.lastName;
+            document.getElementById('dob').value = player.dob;
+            document.getElementById('height').value = player.height;
+            document.getElementById('position').value = player.position;
+            document.getElementById('team').value = player.team;
+        }
+        
+        // Add Player Modal
+        function openAddPlayerModal() {
+            document.getElementById('addPlayerModal').classList.remove('hidden');
+        }
+        
+        function closeAddPlayerModal() {
+            document.getElementById('addPlayerModal').classList.add('hidden');
+        }
+        
+        document.getElementById('addPlayerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would normally send the data to a server
+            alert('Player added successfully!');
+            closeAddPlayerModal();
+        });
+        
+        // Edit and Delete Player functions
+        function editPlayer(playerId) {
+            alert('Editing player with ID: ' + playerId);
+            // In a real application, this would open an edit form with the player's data
+        }
+        
+        function deletePlayer(playerId) {
+            if (confirm('Are you sure you want to delete this player?')) {
+                alert('Player with ID ' + playerId + ' deleted');
+                // In a real application, this would remove the player from the database
+            }
+        }
+        
+        // Load standings data
+        async function fetchStandings() {
+            const standingsContainer = document.getElementById('standingsContainer');
+            const loader = document.getElementById('standingsLoader');
+            
+            try {
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // In a real application, you would fetch this from an API
+                const groups = [
+                    {
+                        group: "C",
+                        teams: [
+                            {
+                                Team: "Argentina",
+                                flag: "https://world-cup.codsfli.com/flag/Argentina.png",
+                                match_play: 3,
+                                win: 2,
+                                draw: 0,
+                                loss: 1,
+                                points: 6
+                            },
+                            {
+                                Team: "Poland",
+                                flag: "https://world-cup.codsfli.com/flag/Poland.png",
+                                match_play: 3,
+                                win: 1,
+                                draw: 1,
+                                loss: 1,
+                                points: 4
+                            },
+                            {
+                                Team: "Mexico",
+                                flag: "https://world-cup.codsfli.com/flag/Mexico.png",
+                                match_play: 3,
+                                win: 1,
+                                draw: 1,
+                                loss: 1,
+                                points: 4
+                            },
+                            {
+                                Team: "Saudi Arabia",
+                                flag: "https://world-cup.codsfli.com/flag/SaudiArabia.png",
+                                match_play: 3,
+                                win: 1,
+                                draw: 0,
+                                loss: 2,
+                                points: 3
+                            }
+                        ]
+                    },
+                    {
+                        group: "F",
+                        teams: [
+                            {
+                                Team: "Morocco",
+                                flag: "https://world-cup.codsfli.com/flag/Morocco.png",
+                                match_play: 3,
+                                win: 2,
+                                draw: 1,
+                                loss: 0,
+                                points: 7
+                            },
+                            {
+                                Team: "Croatia",
+                                flag: "https://world-cup.codsfli.com/flag/Croatia.png",
+                                match_play: 3,
+                                win: 1,
+                                draw: 2,
+                                loss: 0,
+                                points: 5
+                            },
+                            {
+                                Team: "Belgium",
+                                flag: "https://world-cup.codsfli.com/flag/Belgium.png",
+                                match_play: 3,
+                                win: 1,
+                                draw: 1,
+                                loss: 1,
+                                points: 4
+                            },
+                            {
+                                Team: "Canada",
+                                flag: "https://world-cup.codsfli.com/flag/Canada.png",
+                                match_play: 3,
+                                win: 0,
+                                draw: 0,
+                                loss: 3,
+                                points: 0
+                            }
+                        ]
+                    }
+                ];
+                
+                // Sort teams by position (points descending)
+                groups.forEach(group => {
+                    group.teams.sort((a, b) => b.points - a.points);
+                    group.teams.forEach((team, index) => {
+                        team.position = index + 1;
+                    });
+                });
+                
+                // Display standings
+                standingsContainer.innerHTML = '';
+                groups.forEach(group => {
+                    standingsContainer.innerHTML += `
+                        <div class="points-table bg-white rounded-lg overflow-hidden shadow-md">
+                            <h1 class="group-heading bg-primary text-white text-2xl font-bold py-3 text-center">GROUP ${group.group}</h1>
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th class="py-3 px-4 text-left">Team</th>
+                                            <th class="py-3 px-4 text-center">MP</th>
+                                            <th class="py-3 px-4 text-center">W</th>
+                                            <th class="py-3 px-4 text-center">D</th>
+                                            <th class="py-3 px-4 text-center">L</th>
+                                            <th class="py-3 px-4 text-center">Pts</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${group.teams.map(team => `
+                                            <tr class="border-t ${team.position <= 2 ? 'bg-purple-50 font-semibold' : ''}">
+                                                <td class="py-3 px-4">
+                                                    <div class="flex items-center">
+                                                        <img src="${team.flag}" alt="${team.Team}" class="team-flag mr-3">
+                                                        <span>${team.Team}</span>
+                                                    </div>
+                                                </td>
+                                                <td class="py-3 px-4 text-center">${team.match_play}</td>
+                                                <td class="py-3 px-4 text-center">${team.win}</td>
+                                                <td class="py-3 px-4 text-center">${team.draw}</td>
+                                                <td class="py-3 px-4 text-center">${team.loss}</td>
+                                                <td class="py-3 px-4 text-center">${team.points}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                loader.style.display = 'none';
+            } catch (error) {
+                console.error('Error loading standings:', error);
+                standingsContainer.innerHTML = '<p class="text-red-500 text-center">Failed to load standings. Please try again later.</p>';
+                loader.style.display = 'none';
+            }
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize carousel (would use Bootstrap JS in a real implementation)
+            
+            // Load standings
+            fetchStandings();
+        });
+
+        // Add this after the existing script tag
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('mainCarousel');
+            const slides = carousel.getElementsByClassName('carousel-item');
+            const indicators = carousel.getElementsByClassName('carousel-indicators')[0].children;
+            let currentSlide = 0;
+            const intervalTime = 5000; // Time between slides in milliseconds
+            
+            // Initialize first slide
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+            
+            function nextSlide() {
+                // Remove active class from current slide and indicator
+                slides[currentSlide].classList.remove('active');
+                indicators[currentSlide].classList.remove('active');
+                
+                // Update current slide index
+                currentSlide = (currentSlide + 1) % slides.length;
+                
+                // Add active class to next slide and indicator
+                slides[currentSlide].classList.add('active');
+                indicators[currentSlide].classList.add('active');
+            }
+            
+            // Auto advance slides
+            let slideInterval = setInterval(nextSlide, intervalTime);
+            
+            // Pause on hover
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(slideInterval);
+            });
+            
+            // Resume on mouse leave
+            carousel.addEventListener('mouseleave', () => {
+                slideInterval = setInterval(nextSlide, intervalTime);
+            });
+            
+            // Manual navigation with indicators
+            Array.from(indicators).forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    clearInterval(slideInterval);
+                    
+                    // Remove active class from current slide and indicator
+                    slides[currentSlide].classList.remove('active');
+                    indicators[currentSlide].classList.remove('active');
+                    
+                    // Update current slide to clicked indicator
+                    currentSlide = index;
+                    
+                    // Add active class to new slide and indicator
+                    slides[currentSlide].classList.add('active');
+                    indicators[currentSlide].classList.add('active');
+                    
+                    // Resume auto-scroll
+                    slideInterval = setInterval(nextSlide, intervalTime);
+                });
+            });
+            
+            // Previous and Next button functionality
+            const prevButton = carousel.querySelector('.carousel-control-prev');
+            const nextButton = carousel.querySelector('.carousel-control-next');
+            
+            prevButton.addEventListener('click', () => {
+                clearInterval(slideInterval);
+                
+                // Remove active class from current slide and indicator
+                slides[currentSlide].classList.remove('active');
+                indicators[currentSlide].classList.remove('active');
+                
+                // Update current slide index
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                
+                // Add active class to new slide and indicator
+                slides[currentSlide].classList.add('active');
+                indicators[currentSlide].classList.add('active');
+                
+                // Resume auto-scroll
+                slideInterval = setInterval(nextSlide, intervalTime);
+            });
+            
+            nextButton.addEventListener('click', () => {
+                clearInterval(slideInterval);
+                nextSlide();
+                slideInterval = setInterval(nextSlide, intervalTime);
+            });
+        });
+    </script>
+</body>
+</html>
